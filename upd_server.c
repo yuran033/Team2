@@ -19,7 +19,7 @@ int main() {
 	bzero(&my_addr, sizeof(my_addr));
 	my_addr.sin_family = AF_INET;
 	my_addr.sin_port = htons(MYPORT);
-	my_addr.sin_addr.s_addr = INADDR_ANY;
+	my_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (-1 == bind(sock, (struct sockaddr*)&my_addr, sizeof(struct sockaddr)))
 	{
 		printf("bind failed!\n");
@@ -27,10 +27,14 @@ int main() {
 	}
 	while (1)
 	{
+		memset(buf, 0, sizeof(buf));
 		recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr*)&cl_addr, &addrlen);
-		printf("客户端请求: %s\n", buf);
-		printf("输入想客户端返回的消息:\n");
-		scanf("%s",msg);
+		printf("from client: %s\n", buf);
+
+		memset(msg, 0, sizeof(msg));
+		printf("please input:\n");
+		scanf("%s", msg);
+		addrlen = sizeof(struct sockaddr);
 		sendto(sock, msg, strlen(msg), 0, (struct sockaddr*)&cl_addr, addrlen);
 	}
 	return 0;
