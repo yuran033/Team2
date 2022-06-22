@@ -11,11 +11,15 @@ int main() {
 	int addrlen = sizeof(cl_addr);
 	char buf[64] = { 0 };
 	char msg[64] = { 0 };
+
+
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock == -1) {
 		printf("socket failed!\n");
 		return -1;
 	}
+
+
 	bzero(&my_addr, sizeof(my_addr));
 	my_addr.sin_family = AF_INET;
 	my_addr.sin_port = htons(MYPORT);
@@ -25,6 +29,8 @@ int main() {
 		printf("bind failed!\n");
 		return -1;
 	}
+
+
 	while (1)
 	{
 		memset(buf, 0, sizeof(buf));
